@@ -1,18 +1,13 @@
-# ValueError: unknown locale: UTF-8 in Python
-# quick fix
-export LC_ALL=en_US.UTF-8
-export LANG=en_US.UTF-8
-
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/keruihuang/.oh-my-zsh
+export ZSH=/Users/satania/.oh-my-zsh
 
 # Set name of the theme to load. Optionally, if you set this to "random"
 # it'll load a random theme each time that oh-my-zsh is loaded.
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="agnoster"
+ZSH_THEME="suvash"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -89,25 +84,19 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-powerline-daemon -q
-# . /usr/local/lib/python2.7/site-packages/powerline/bindings/zsh/powerline.zsh
+alias qqvolume='printf "p *(char*)(void(*)())AudioDeviceDuck=0xc3\nq" | lldb -n QQ'
 
-alias vim='nvim'
-export EDITOR=vim
-
-alias pon='export http_proxy=http://duotai:yTQvltCjlK@conrad.h.xduotai.com:16003;export https_proxy=$http_proxy' 
+# proxy
+alias pon='export http_proxy=http://127.0.0.1:1087;export https_proxy=http://127.0.0.1:1087;'
 alias poff='unset http_proxy;unset https_proxy'
 
-export ANDROID_HOME=/usr/local/opt/android-sdk
-export PATH=${PATH}:${ANDROID_HOME}/tools
-export PATH=${PATH}:${ANDROID_HOME}/platform-tools
-
-export PATH=${PATH}:$HOME/bin
-export PATH=${PATH}:$HOME/bin/llvm/bin
-
-export PATH="$PATH:`yarn global bin`"
-
-export GOPATH=$HOME/dev/go
 export PATH=$PATH:$(go env GOPATH)/bin
+export GOPATH=$(go env GOPATH)
 
+export ANDROID_SDK_ROOT=/usr/local/share/android-sdk
+export ANDROID_NDK_HOME=/usr/local/share/android-ndk
 
+export TERM=xterm-256color
+
+source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
+source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
