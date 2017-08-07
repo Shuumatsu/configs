@@ -8,6 +8,10 @@ Plugin 'VundleVim/Vundle.vim'
 
 " dracula color scheme
 Plugin 'dracula/vim'
+" Material color scheme for Vim based on w0ng/vim-hybrid color scheme.
+Plugin 'kristijanhusak/vim-hybrid-material'
+" Material theme for vim
+Plugin 'jdkanani/vim-material-theme'
 
 Plugin 'Valloric/YouCompleteMe'
 
@@ -54,10 +58,15 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+let g:syntastic_go_checkers = ['go', 'golint', 'govet', 'gofmt']
 let g:syntastic_python_checkers = ['pylint']
 
 " Neoformat
 let g:neoformat_enabled_python = ['yapf']
+let g:neoformat_enabled_go = ['goimports', 'gofmt']
+let g:neoformat_enabled_css = ['prettier', 'js-beautify']
+noremap <F3> :Neoformat <CR>
 " format on save
 augroup fmt
   autocmd!
@@ -116,3 +125,4 @@ set cursorcolumn
 
 " https://github.com/fatih/vim-go/issues/1236
 set completeopt-=preview
+
