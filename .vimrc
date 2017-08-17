@@ -6,6 +6,8 @@ call vundle#begin('~/.config/nvim/bundle')
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
+" Plugin 'fatih/vim-go'
+
 " dracula color scheme
 Plugin 'dracula/vim'
 " Material color scheme for Vim based on w0ng/vim-hybrid color scheme.
@@ -103,6 +105,8 @@ set incsearch
 
 syntax on
 color dracula
+hi SpellCap guisp=#66BB6A
+:hi SpellCap guisp=#66BB6A
 
 " tells Vim to highlight matches with the last used search pattern.
 set hlsearch
