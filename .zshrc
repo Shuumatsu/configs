@@ -87,7 +87,7 @@ source $ZSH/oh-my-zsh.sh
 alias qqvolume='printf "p *(char*)(void(*)())AudioDeviceDuck=0xc3\nq" | lldb -n QQ'
 
 # proxy
-alias pon='export http_proxy=http://127.0.0.1:1087;export https_proxy=http://127.0.0.1:1087;'
+alias pon='export https_proxy=http://127.0.0.1:6152;export http_proxy=http://127.0.0.1:6152'
 alias poff='unset http_proxy;unset https_proxy'
 
 export PATH=$PATH:$(go env GOPATH)/bin
