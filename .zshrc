@@ -85,10 +85,13 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 alias qqvolume='printf "p *(char*)(void(*)())AudioDeviceDuck=0xc3\nq" | lldb -n QQ'
+eval "$(thefuck --alias)"
 
 # proxy
-alias pon='export https_proxy=http://127.0.0.1:6152;export http_proxy=http://127.0.0.1:6152'
+alias pon='export http_proxy=http://127.0.0.1:1087;export https_proxy=http://127.0.0.1:1087;'
 alias poff='unset http_proxy;unset https_proxy'
+
+export PATH=$PATH:~/.local/bin
 
 export PATH=$PATH:$(go env GOPATH)/bin
 export GOPATH=$(go env GOPATH)
@@ -100,3 +103,7 @@ export TERM=xterm-256color
 
 source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
 source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
+export PATH="/usr/local/sbin:$PATH"
+
+# OPAM configuration
+. /Users/satania/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
