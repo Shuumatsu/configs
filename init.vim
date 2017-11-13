@@ -8,6 +8,14 @@ Plugin 'VundleVim/Vundle.vim'
 
 " Plugin 'fatih/vim-go'
 
+" Scala
+" Plugin 'ensime/ensime-vim'
+" for Scala filetype detection and highlighting.
+" Plugin 'derekwyatt/vim-scala'
+
+" Haskell
+Plugin 'neovimhaskell/haskell-vim'
+
 " dracula color scheme
 Plugin 'dracula/vim'
 " Material color scheme for Vim based on w0ng/vim-hybrid color scheme.
@@ -37,6 +45,8 @@ Plugin 'nathanaelkane/vim-indent-guides'
 
 Plugin 'sbdchd/neoformat'
 
+" Plugin 'terryma/vim-multiple-cursors'
+
 call vundle#end()            " required
 " This switches on three very clever mechanisms:
 " 1. Filetype detection.
@@ -63,10 +73,13 @@ let g:syntastic_check_on_wq = 0
 
 let g:syntastic_go_checkers = ['go', 'golint', 'govet', 'gofmt']
 let g:syntastic_python_checkers = ['pylint']
+" let g:syntastic_scala_checkers = ['scalastyle']
 
 " Neoformat
+let g:neoformat_enabled_haskell = ['stylish-haskell', 'hindent']
 let g:neoformat_enabled_python = ['yapf']
 let g:neoformat_enabled_go = ['goimports', 'gofmt']
+" let g:neoformat_enabled_scala = ['scalafmt']
 let g:neoformat_enabled_css = ['prettier', 'js-beautify']
 noremap <F3> :Neoformat <CR>
 " format on save
@@ -77,6 +90,21 @@ augroup END
 
 " NERDtree
 map <C-n> :NERDTreeToggle<CR>
+
+" ensime
+" autocmd BufWritePost *.scala silent :EnTypeCheck
+
+" haskell-vim
+let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
+let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
+let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
+let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
+let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
+let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
+let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
+" use neoformat
+let g:haskell_indent_disable = 1
+
 
 """""""""""""""""""
 "                 "
@@ -94,7 +122,7 @@ set noswapfile
 
 " providers
 " disable python2 support
-let g:loaded_python_provider = 1
+" let g:loaded_python_provider = 1
 " disable ruby support
 let g:loaded_ruby_provider = 1
 
@@ -129,4 +157,3 @@ set cursorcolumn
 
 " https://github.com/fatih/vim-go/issues/1236
 set completeopt-=preview
-
