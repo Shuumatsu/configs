@@ -1,68 +1,93 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
-set rtp+=~/.config/nvim/bundle/Vundle.vim
-call vundle#begin('~/.config/nvim/bundle')
+""""""""""""""""""""""""""""
+"                          "
+"      plugin configs      "
+"                          "
+""""""""""""""""""""""""""""
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+" That not only adds merlin to your runtime path, but will always pick the version corresponding to your opam switch without you needing to modify your config
+" (assuming you install merlin on each of your switches).
+let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+execute "set rtp+=" . g:opamshare . "/merlin/vim"
 
-" Plugin 'fatih/vim-go'
+" manually to update the documentation
+" :execute "helptags " . substitute(system('opam config var share'),'\n$','','''') .  "/merlin/vim/doc"
 
-" Scala
-" Plugin 'ensime/ensime-vim'
-" for Scala filetype detection and highlighting.
-" Plugin 'derekwyatt/vim-scala'
+set runtimepath+=~/.config/nvim/repos/github.com/Shougo/dein.vim
 
-" Haskell
-Plugin 'neovimhaskell/haskell-vim'
+if dein#load_state('~/.config/nvim')
+    call dein#begin('~/.config/nvim')
 
-" dracula color scheme
-Plugin 'dracula/vim'
-" Material color scheme for Vim based on w0ng/vim-hybrid color scheme.
-Plugin 'kristijanhusak/vim-hybrid-material'
-" Material theme for vim
-Plugin 'jdkanani/vim-material-theme'
+    " Let dein manage dein
+    " Required
+    call dein#add('~/.config/nvim/repos/github.com/Shougo/dein.vim')
 
-Plugin 'Valloric/YouCompleteMe'
+    " Add or remove your plugins here:
 
-Plugin 'scrooloose/nerdtree'
+    call dein#add('Chiel92/vim-autoformat')
 
-Plugin 'scrooloose/nerdcommenter'
+    call dein#add('arcticicestudio/nord-vim')
+    call dein#add('liuchengxu/space-vim-dark')
 
-Plugin 'scrooloose/syntastic'
+    call dein#add('vim-syntastic/syntastic')
 
-Plugin 'sirver/ultisnips'
-Plugin 'honza/vim-snippets'
+    call dein#add('vim-airline/vim-airline')
+    call dein#add('vim-airline/vim-airline-themes')
 
-Plugin 'tpope/vim-surround'
+    call dein#add('Valloric/YouCompleteMe')
 
-Plugin 'raimondi/delimitmate'
+    call dein#add('scrooloose/nerdtree')
+    call dein#add('scrooloose/nerdcommenter')
 
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+    " Maintains a history of previous yanks, changes and deletes
+    call dein#add('vim-scripts/YankRing.vim')
 
-Plugin 'nathanaelkane/vim-indent-guides'
+    " Required
+    call dein#end()
+    call dein#save_state()
+endif
 
-Plugin 'sbdchd/neoformat'
+" Required
+filetype plugin indent on
+syntax enable
 
-" Plugin 'terryma/vim-multiple-cursors'
+" If you want to install not installed plugins on startup.
+if dein#check_install()
+    call dein#install()
+endif
 
-call vundle#end()            " required
-" This switches on three very clever mechanisms:
-" 1. Filetype detection.
-" 2. Using filetype plugin files
-" 3. Using indent files
-filetype plugin indent on    " required
+" vim-autoformat
+let g:formatters_ml = ['ocp-indent', 'ocamlformat']
+let g:formatters_javascript = ['eslint_local']
+" have your code be formatted upon saving your file
+au BufWrite * :Autoformat
 
-" airline
-let g:airline_theme='base16'
+" nerdcommenter
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 0
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
+" Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDCommentEmptyLines = 1
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
 
-" UltiSnips
-let g:UltiSnipsExpandTrigger="<c-k>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+" nerdtree
+" open a NERDTree automatically when vim starts up if no files were specified
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+" open NERDTree automatically when vim starts up on opening a directory
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+" open NERDTree with Ctrl+t
+map <C-t> :NERDTreeToggle<CR>
+" close vim if the only window left open is a NERDTree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-" Synstastic
+" syntastic
+let g:syntastic_ocaml_checkers = ['merlin']
+let g:syntastic_javascript_checkers = ['eslint']
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
@@ -71,51 +96,26 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
-let g:syntastic_go_checkers = ['go', 'golint', 'govet', 'gofmt']
-let g:syntastic_python_checkers = ['pylint']
-" let g:syntastic_scala_checkers = ['scalastyle']
+" vim-airline
+let g:airline_theme='deus'
 
-" Neoformat
-let g:neoformat_enabled_haskell = ['stylish-haskell', 'hindent']
-let g:neoformat_enabled_python = ['yapf']
-let g:neoformat_enabled_go = ['goimports', 'gofmt']
-" let g:neoformat_enabled_scala = ['scalafmt']
-let g:neoformat_enabled_css = ['prettier', 'js-beautify']
-noremap <F3> :Neoformat <CR>
-" format on save
-augroup fmt
-  autocmd!
-  autocmd BufWritePre * Neoformat
-augroup END
+""""""""""""""""""""""""""""
+"                          "
+"     generaal configs     "
+"                          "
+""""""""""""""""""""""""""""
 
-" NERDtree
-map <C-n> :NERDTreeToggle<CR>
-
-" ensime
-" autocmd BufWritePost *.scala silent :EnTypeCheck
-
-" haskell-vim
-let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
-let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
-let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
-let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
-let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
-let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
-let g:haskell_backpack = 1                " to enable highlighting of backpack keywords
-" use neoformat
-let g:haskell_indent_disable = 1
-
-
-"""""""""""""""""""
-"                 "
-" general configs "
-"                 "
-"""""""""""""""""""
-
+" When a file has been detected to have been changed outside of Vim and it has not been changed inside of Vim,
+" automatically read it again.
+set autoread
 
 " use true colors in the terminal
 " see more in this gist: https://gist.github.com/XVilka/8346728
 set termguicolors
+" colorscheme nord
+colorscheme space-vim-dark
+" If the terminal supports italics, put hi Comment cterm=italic after colorshcme command.
+hi Comment cterm=italic
 
 " disable swap file creation
 set noswapfile
@@ -131,11 +131,6 @@ set nu
 " Display matches for a search pattern while you type.
 set incsearch
 
-syntax on
-color dracula
-hi SpellCap guisp=#66BB6A
-:hi SpellCap guisp=#66BB6A
-
 " tells Vim to highlight matches with the last used search pattern.
 set hlsearch
 set ignorecase
@@ -146,14 +141,15 @@ set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 
-"被分割窗口之间显示空白
-" set fillchars=vert:/
-" set fillchars=stl:/
-" set fillchars=stlnc:/
-
 " highlight current line and column
 set cursorline
 set cursorcolumn
 
 " https://github.com/fatih/vim-go/issues/1236
 set completeopt-=preview
+
+set autoread
+
+" 光标移动到 buffer 的顶部和底部时保持 10 行距离
+set scrolloff=10
+
