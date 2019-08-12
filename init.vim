@@ -3,40 +3,29 @@
 "      plugin configs      "
 "                          "
 """"""""""""""""""""""""""""
+set runtimepath+=/Users/curry/.cache/dein/repos/github.com/Shougo/dein.vim
 
-" That not only adds merlin to your runtime path, but will always pick the version corresponding to your opam switch without you needing to modify your config
-" (assuming you install merlin on each of your switches).
-let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
-execute "set rtp+=" . g:opamshare . "/merlin/vim"
-
-" manually to update the documentation
-" :execute "helptags " . substitute(system('opam config var share'),'\n$','','''') .  "/merlin/vim/doc"
-
-set runtimepath+=~/.config/nvim/repos/github.com/Shougo/dein.vim
-
-if dein#load_state('~/.config/nvim')
-    call dein#begin('~/.config/nvim')
+if dein#load_state('~/.cache/dein')
+    call dein#begin('~/.cache/dein')
 
     " Let dein manage dein
     " Required
-    call dein#add('~/.config/nvim/repos/github.com/Shougo/dein.vim')
+    call dein#add('~/.cache/nvim/repos/github.com/Shougo/dein.vim')
 
     " Add or remove your plugins here:
 
-    call dein#add('Chiel92/vim-autoformat')
+    call dein#add('neoclide/coc.nvim', {'merge':0, 'rev': 'release'})
 
     call dein#add('arcticicestudio/nord-vim')
     call dein#add('liuchengxu/space-vim-dark')
 
-    call dein#add('vim-syntastic/syntastic')
-
     call dein#add('vim-airline/vim-airline')
     call dein#add('vim-airline/vim-airline-themes')
 
-    call dein#add('Valloric/YouCompleteMe')
-
     call dein#add('scrooloose/nerdtree')
     call dein#add('scrooloose/nerdcommenter')
+
+    call dein#add('liuchengxu/vim-which-key')
 
     " Maintains a history of previous yanks, changes and deletes
     call dein#add('vim-scripts/YankRing.vim')
@@ -55,11 +44,48 @@ if dein#check_install()
     call dein#install()
 endif
 
-" vim-autoformat
-let g:formatters_ml = ['ocp-indent', 'ocamlformat']
-let g:formatters_javascript = ['eslint_local']
-" have your code be formatted upon saving your file
-au BufWrite * :Autoformat
+" coc.vim
+set hidden
+set nobackup
+set nowritebackup
+" Better display for messages
+set cmdheight=2
+set updatetime=300
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+" always show signcolumns
+set signcolumn=yes
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+function! s:show_documentation()
+    if (index(['vim','help'], &filetype) >= 0)
+        execute 'h '.expand('<cword>')
+    else
+        call CocAction('doHover')
+    endif
+endfunction
+" use <tab> for trigger completion and navigate to the next complete item
+
+function! s:check_back_space() abort
+	  let col = col('.') - 1
+	    return !col || getline('.')[col - 1]  =~ '\s'
+    endfunction
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <silent><expr> <S-Tab>
+      \ pumvisible() ? "\<C-p>" :
+      \ <SID>check_back_space() ? "\<S-Tab>" :
+      \ coc#refresh()
+" enable highlight current symbol on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" which-key.vim
+" By default timeoutlen is 1000 ms
+set timeoutlen=500
+nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
+nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
 
 " nerdcommenter
 " Add spaces after comment delimiters by default
@@ -78,32 +104,26 @@ let g:NERDTrimTrailingWhitespace = 1
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 " open NERDTree automatically when vim starts up on opening a directory
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
+" autocmd StdinReadPre * let s:std_in=1
+" autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | endif
 " open NERDTree with Ctrl+t
 map <C-t> :NERDTreeToggle<CR>
 " close vim if the only window left open is a NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
-" syntastic
-let g:syntastic_ocaml_checkers = ['merlin']
-let g:syntastic_javascript_checkers = ['eslint']
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
 
 " vim-airline
 let g:airline_theme='deus'
 
 """"""""""""""""""""""""""""
 "                          "
-"     generaal configs     "
+"     general configs     "
 "                          "
 """"""""""""""""""""""""""""
+
+let g:maplocalleader = ','
+
+" get correct comment highlighting in json
+autocmd FileType json syntax match Comment +\/\/.\+$+
 
 " When a file has been detected to have been changed outside of Vim and it has not been changed inside of Vim,
 " automatically read it again.
@@ -151,5 +171,4 @@ set completeopt-=preview
 set autoread
 
 " 光标移动到 buffer 的顶部和底部时保持 10 行距离
-set scrolloff=10
-
+ set scrolloff=10
