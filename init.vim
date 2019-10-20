@@ -5,10 +5,37 @@
 """"""""""""""""""""""""""""
 
 if has('win32')
-    source ~\AppData\Local\nvim\packages.vim
+    call plug#begin('~\AppData\Local\nvim\plugged'
 else 
-    source ~/.config/nvim/packages.vim 
+    call plug#begin('~/.vim/plugged')
 endif
+
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+    Plug 'junegunn/goyo.vim'
+
+    Plug 'arcticicestudio/nord-vim'
+    Plug 'liuchengxu/space-vim-dark'
+
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
+
+    Plug 'scrooloose/nerdtree'
+    Plug 'scrooloose/nerdcommenter'
+
+    Plug 'liuchengxu/vim-which-key'
+
+    " Maintains a history of previous yanks, changes and deletes
+    Plug 'vim-scripts/YankRing.vim'
+
+    " ReasonML
+    Plug 'reasonml-editor/vim-reason-plus'
+
+    Plug 'sbdchd/neoformat'
+
+    Plug 't9md/vim-choosewin'
+
+call plug#end()
 
 """"""""""""""""""""""""""""
 "                          "
