@@ -38,6 +38,8 @@ endif
 
     Plug 't9md/vim-choosewin'
 
+    Plug 'voldikss/vim-floaterm'
+
 call plug#end()
 
 """"""""""""""""""""""""""""
@@ -166,6 +168,13 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 " vim-airline
 let g:airline_theme='deus'
 
+
+" vim-floaterm 
+noremap  <silent> <F12>           :FloatermToggle<CR>i
+noremap! <silent> <F12>           <Esc>:FloatermToggle<CR>i
+tnoremap <silent> <F12>           <C-\><C-n>:FloatermToggle<CR>
+let g:floaterm_position = "center"
+
 """"""""""""""""""""""""""""
 "                          "
 "     general configs     "
@@ -209,11 +218,14 @@ endif
 " see more in this gist: https://gist.github.com/XVilka/8346728
 set termguicolors
 " colorscheme nord
-colorscheme space-vim-dark
+" colorscheme space-vim-dark
+if has("win32")
+    colorscheme space-vim-dark
+else
+    source ~/.config/nvim/color-veonim.vim"
+endif
 " If the terminal supports italics, put hi Comment cterm=italic after colorshcme command.
 hi Comment cterm=italic
-
-let g:maplocalleader = ','
 
 " get correct comment highlighting in json
 autocmd FileType json syntax match Comment +\/\/.\+$+
