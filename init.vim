@@ -28,8 +28,6 @@ endif
     Plug 'scrooloose/nerdtree'
     Plug 'scrooloose/nerdcommenter'
 
-    Plug 'liuchengxu/vim-which-key'
-
     " Maintains a history of previous yanks, changes and deletes
     Plug 'vim-scripts/YankRing.vim'
 
@@ -52,13 +50,17 @@ call plug#end()
 set hidden
 set nobackup
 set nowritebackup
+set updatetime=300
+
 " Better display for messages
 set cmdheight=2
-set updatetime=300
+
 " don't give |ins-completion-menu| messages.
 set shortmess+=c
+
 " always show signcolumns
 set signcolumn=yes
+
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 function! s:show_documentation()
@@ -68,6 +70,7 @@ function! s:show_documentation()
         call CocAction('doHover')
     endif
 endfunction
+
 " use <tab> for trigger completion and navigate to the next complete item
 function! s:check_back_space() abort
           let col = col('.') - 1
@@ -81,14 +84,47 @@ inoremap <silent><expr> <S-Tab>
       \ pumvisible() ? "\<C-p>" :
       \ <SID>check_back_space() ? "\<S-Tab>" :
       \ coc#refresh()
+
 " enable highlight current symbol on CursorHold
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
-" which-key.vim
-" By default timeoutlen is 1000 ms
-set timeoutlen=500
-nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
-nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+map <F2> <Plug>(coc-rename)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" Use `:Format` to format current buffer
+command! -nargs=0 Format :call CocAction('format')
+
+" Add status line support, for integration with other plugin, checkout `:h coc-status`
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+" Using CocList
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
 " neoformat
 let g:neoformat_enabled_ocaml = ['ocamlformat']
