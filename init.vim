@@ -1,48 +1,20 @@
 """"""""""""""""""""""""""""
 "                          "
+"    package management    "
+"                          "
+""""""""""""""""""""""""""""
+
+if has('win32')
+    source ~\AppData\Local\nvim\packages.vim
+else 
+    source ~/.config/nvim/packages.vim 
+endif
+
+""""""""""""""""""""""""""""
+"                          "
 "      plugin configs      "
 "                          "
 """"""""""""""""""""""""""""
-set runtimepath+=/Users/curry/.cache/dein/repos/github.com/Shougo/dein.vim
-
-if dein#load_state('~/.cache/dein')
-    call dein#begin('~/.cache/dein')
-
-    " Let dein manage dein
-    " Required
-    call dein#add('~/.cache/nvim/repos/github.com/Shougo/dein.vim')
-
-    " Add or remove your plugins here:
-
-    call dein#add('neoclide/coc.nvim', {'merge':0, 'rev': 'release'})
-
-    call dein#add('arcticicestudio/nord-vim')
-    call dein#add('liuchengxu/space-vim-dark')
-
-    call dein#add('vim-airline/vim-airline')
-    call dein#add('vim-airline/vim-airline-themes')
-
-    call dein#add('scrooloose/nerdtree')
-    call dein#add('scrooloose/nerdcommenter')
-
-    call dein#add('liuchengxu/vim-which-key')
-
-    " Maintains a history of previous yanks, changes and deletes
-    call dein#add('vim-scripts/YankRing.vim')
-
-    " Required
-    call dein#end()
-    call dein#save_state()
-endif
-
-" Required
-filetype plugin indent on
-syntax enable
-
-" If you want to install not installed plugins on startup.
-if dein#check_install()
-    call dein#install()
-endif
 
 " coc.vim
 set hidden
@@ -65,10 +37,9 @@ function! s:show_documentation()
     endif
 endfunction
 " use <tab> for trigger completion and navigate to the next complete item
-
 function! s:check_back_space() abort
-	  let col = col('.') - 1
-	    return !col || getline('.')[col - 1]  =~ '\s'
+          let col = col('.') - 1
+            return !col || getline('.')[col - 1]  =~ '\s'
     endfunction
 inoremap <silent><expr> <Tab>
       \ pumvisible() ? "\<C-n>" :
@@ -87,6 +58,18 @@ set timeoutlen=500
 nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
 nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
 
+" neoformat
+let g:neoformat_enabled_ocaml = ['ocamlformat']
+map <F3> :Neoformat <CR>
+
+" vim-choosewin
+" invoke with '-'
+nmap  -  <Plug>(choosewin)
+" if you want to use overlay feature
+let g:choosewin_overlay_enable = 1
+
+" goyo
+
 " nerdcommenter
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
@@ -98,6 +81,7 @@ let g:NERDDefaultAlign = 'left'
 let g:NERDCommentEmptyLines = 1
 " Enable trimming of trailing whitespace when uncommenting
 let g:NERDTrimTrailingWhitespace = 1
+map <C-b> :NERDTreeToggle<CR>
 
 " nerdtree
 " open a NERDTree automatically when vim starts up if no files were specified
@@ -120,14 +104,38 @@ let g:airline_theme='deus'
 "                          "
 """"""""""""""""""""""""""""
 
-let g:maplocalleader = ','
+if exists('veonim')
+    let g:vscode_extensions = [
+        \'esbenp.prettier-vscode',
+        \'vscode.typescript-language-features',
+        \'vscode.css-language-features',
+        \'vscode.html-language-features',
+        \'vscode.markdown-language-features',
+    \]
+    let g:vscode_config = {
+    \}
+    set guifont=iosevka:h16
+else
+    " Display matches for a search pattern while you type.
+    set incsearch
 
-" get correct comment highlighting in json
-autocmd FileType json syntax match Comment +\/\/.\+$+
+    " tells Vim to highlight matches with the last used search pattern.
+    set hlsearch
+    set ignorecase
+    set incsearch
 
-" When a file has been detected to have been changed outside of Vim and it has not been changed inside of Vim,
-" automatically read it again.
-set autoread
+    set expandtab
+    set tabstop=4
+    set softtabstop=4
+    set shiftwidth=4
+
+    " highlight current line and column
+    set cursorline
+    set cursorcolumn
+
+    " https://github.com/fatih/vim-go/issues/1236
+    set completeopt-=preview
+endif
 
 " use true colors in the terminal
 " see more in this gist: https://gist.github.com/XVilka/8346728
@@ -137,38 +145,21 @@ colorscheme space-vim-dark
 " If the terminal supports italics, put hi Comment cterm=italic after colorshcme command.
 hi Comment cterm=italic
 
+let g:maplocalleader = ','
+
+" get correct comment highlighting in json
+autocmd FileType json syntax match Comment +\/\/.\+$+
+
+" When a file has been detected to have been changed outside of Vim and it has not been changed inside of Vim,
+" automatically read it again.
+set autoread
+
 " disable swap file creation
 set noswapfile
 
-" providers
-" disable python2 support
-" let g:loaded_python_provider = 1
-" disable ruby support
-let g:loaded_ruby_provider = 1
-
 set nu
-
-" Display matches for a search pattern while you type.
-set incsearch
-
-" tells Vim to highlight matches with the last used search pattern.
-set hlsearch
-set ignorecase
-set incsearch
-
-set expandtab
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-
-" highlight current line and column
-set cursorline
-set cursorcolumn
-
-" https://github.com/fatih/vim-go/issues/1236
-set completeopt-=preview
 
 set autoread
 
 " 光标移动到 buffer 的顶部和底部时保持 10 行距离
- set scrolloff=10
+set scrolloff=10
