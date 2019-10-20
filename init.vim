@@ -40,6 +40,8 @@ endif
 
     Plug 'voldikss/vim-floaterm'
 
+    Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
+
 call plug#end()
 
 """"""""""""""""""""""""""""
