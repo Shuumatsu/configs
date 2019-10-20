@@ -10,7 +10,7 @@ let g:loaded_ruby_provider = 0
 """"""""""""""""""""""""""""
 
 if has('win32')
-    call plug#begin('~\AppData\Local\nvim\plugged'
+    call plug#begin('~\AppData\Local\nvim\plugged')
 else 
     call plug#begin('~/.vim/plugged')
 endif
