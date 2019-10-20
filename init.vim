@@ -1,3 +1,8 @@
+" disable python2 support
+let g:loaded_python_provider = 0
+" disable ruby support
+let g:loaded_ruby_provider = 0
+
 """"""""""""""""""""""""""""
 "                          "
 "    package management    "
