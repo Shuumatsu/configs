@@ -14,6 +14,8 @@ if has('win32')
 else 
     call plug#begin('~/.vim/plugged')
 endif
+    
+    Plug 'vhdirk/vim-cmake'
 
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
@@ -39,8 +41,6 @@ endif
     Plug 't9md/vim-choosewin'
 
     Plug 'voldikss/vim-floaterm'
-
-    Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 
 call plug#end()
 
@@ -153,7 +153,6 @@ let g:NERDDefaultAlign = 'left'
 let g:NERDCommentEmptyLines = 1
 " Enable trimming of trailing whitespace when uncommenting
 let g:NERDTrimTrailingWhitespace = 1
-map <C-b> :NERDTreeToggle<CR>
 
 " nerdtree
 " open a NERDTree automatically when vim starts up if no files were specified
@@ -166,6 +165,7 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 map <C-t> :NERDTreeToggle<CR>
 " close vim if the only window left open is a NERDTree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+map <C-b> :NERDTreeToggle<CR>
 
 " vim-airline
 let g:airline_theme='deus'
